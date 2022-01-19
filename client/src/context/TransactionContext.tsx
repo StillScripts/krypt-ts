@@ -116,8 +116,6 @@ export const TransactionProvider: React.FC = ({ children }) => {
 
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
-
-        // getAllTransactions()
       } else {
         console.log("No accounts found");
       }
@@ -148,12 +146,17 @@ export const TransactionProvider: React.FC = ({ children }) => {
 
   const checkIfTransactionsExist = async () => {
     try {
-      const transactionContract = getEthereumContract();
+      if (ethereum) {
+        const transactionsContract = getEthereumContract();
+        const currentTransactionCount = await transactionsContract.getTransactionCount();
 
-      window.localStorage.setItem("transactionCount", transactionCount || "0");
-      getAllTransactions();
+        window.localStorage.setItem("transactionCount", currentTransactionCount);
+        getAllTransactions();
+      }
     } catch (error) {
       console.log(error);
+
+      throw new Error("No ethereum object");
     }
   };
 
@@ -193,6 +196,7 @@ export const TransactionProvider: React.FC = ({ children }) => {
       const transactionCount = await transactionContract.getTransactionCount();
 
       setTransactionCount(transactionCount.toNumber());
+      getAllTransactions();
     } catch (error) {
       console.log("error: ", error);
 
@@ -212,6 +216,7 @@ export const TransactionProvider: React.FC = ({ children }) => {
         formData,
         isLoading,
         transactions,
+        transactionCount,
         connectWallet,
         handleChange,
         sendTransaction,

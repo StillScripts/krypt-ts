@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { HiMenuAlt4 } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
 
 import logo from "../../images/logo.png";
+import { TransactionContext } from "../context/TransactionContext";
 
 export interface NavbarItemProps {
   title: string;
@@ -13,10 +14,10 @@ const NavbarItem: React.FC<NavbarItemProps> = ({ title, classProps }) => {
   return <li className={`mx-4 cursor-pointer ${classProps}`}>{title}</li>;
 };
 
-export interface NavbarProps {}
-
-const Navbar: React.FC<NavbarProps> = ({ children }) => {
+const Navbar: React.FC = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
+
+  const { currentAccount } = useContext(TransactionContext);
 
   return (
     <nav className="w-full flex md:justify-center justify-between items-center p-4">
@@ -28,7 +29,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
           <NavbarItem key={item + index} title={item} />
         ))}
         <li className="bg-[#2952e3] py-2 px-7 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd]">
-          Login
+          {currentAccount ? "Dashboard" : "Login"}
         </li>
       </ul>
       <div className="flex relative">
@@ -51,7 +52,10 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
               flex flex-col justify-start items-end rounded-md blue-glassmorphism text-white animate-slide-in"
           >
             <li className="text-xl w-full my-2">
-              <AiOutlineClose className="cursor-pointer" onClick={() => setToggleMenu(false)} />
+              <AiOutlineClose
+                className="cursor-pointer"
+                onClick={() => setToggleMenu(false)}
+              />
             </li>
             {["Market", "Exchange", "Tutorials", "Wallets"].map(
               (item, index) => (

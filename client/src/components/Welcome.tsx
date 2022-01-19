@@ -15,7 +15,7 @@ interface InputProps {
   name: string;
   type: string;
   value: string;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void;
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -30,7 +30,9 @@ const Input: React.FC<InputProps> = ({
     type={type}
     step="0.0001"
     value={value}
-    onChange={(e) => handleChange(e, name)}
+    onChange={(e) =>
+      handleChange ? handleChange(e, name) : console.log("Broken input")
+    }
     className="my-2 w-full rounded-sm p-2 outline-none bg-transparent text-white border-none text-sm white-glassmorphism"
   />
 );
@@ -70,14 +72,17 @@ const Welcome: React.FC<WelcomeProps> = () => {
             Explore the crypto world. Buy and sell cryptocurrencies easily on
             Krypto
           </p>
-          {!currentAccount &&
-          <button
-            type="button"
-            onClick={connectWallet}
-            className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
-          >
-            <p className="text-white text-base font-semibold">Connect Wallet</p>
-          </button>}
+          {!currentAccount && (
+            <button
+              type="button"
+              onClick={connectWallet}
+              className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
+            >
+              <p className="text-white text-base font-semibold">
+                Connect Wallet
+              </p>
+            </button>
+          )}
           <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
             <div className={`rounded-tl-3xl ${commonStyles}`}>Reliability</div>
             <div className={`rounded-tr-3xl sm:rounded-none ${commonStyles}`}>
@@ -110,51 +115,49 @@ const Welcome: React.FC<WelcomeProps> = () => {
               </div>
             </div>
           </div>
-
-          {handleChange && (
-            <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
-              <Input
-                placeholder="Address To"
-                name="addressTo"
-                type="text"
-                handleChange={handleChange}
-                value={formData?.addressTo ? formData.addressTo : ""}
-              />
-              <Input
-                placeholder="Amount (ETH)"
-                name="amount"
-                type="number"
-                handleChange={handleChange}
-                value={formData?.amount ? formData.amount : ""}
-              />
-              <Input
-                placeholder="Keyword (Gif)"
-                name="keyword"
-                type="text"
-                handleChange={handleChange}
-                value={formData?.keyword ? formData.keyword : ""}
-              />
-              <Input
-                placeholder="Enter Message"
-                name="message"
-                type="text"
-                handleChange={handleChange}
-                value={formData?.message ? formData.message : ""}
-              />
-              <div className="h-[1px] w-full bg-gray-400 my-2" />
-              {isLoading ? (
-                <Loader />
-              ) : (
-                <button
-                  type="button"
-                  onClick={(e) => handleSubmit(e)}
-                  className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
-                >
-                  Send now
-                </button>
-              )}
-            </div>
-          )}
+          <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
+            <Input
+              placeholder="Address To"
+              name="addressTo"
+              type="text"
+              handleChange={handleChange}
+              value={formData?.addressTo ? formData.addressTo : ""}
+            />
+            <Input
+              placeholder="Amount (ETH)"
+              name="amount"
+              type="number"
+              handleChange={handleChange}
+              value={formData?.amount ? formData.amount : ""}
+            />
+            <Input
+              placeholder="Keyword (Gif)"
+              name="keyword"
+              type="text"
+              handleChange={handleChange}
+              value={formData?.keyword ? formData.keyword : ""}
+            />
+            <Input
+              placeholder="Enter Message"
+              name="message"
+              type="text"
+              handleChange={handleChange}
+              value={formData?.message ? formData.message : ""}
+            />
+            <div className="h-[1px] w-full bg-gray-400 my-2" />
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <button
+                type="button"
+                onClick={(e) => handleSubmit(e)}
+                className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
+              >
+                Send now
+              </button>
+            )}
+          </div>
+          )
         </div>
       </div>
     </div>
