@@ -26,7 +26,15 @@ const Footer: React.FC = () => (
       <p className="text-white text-sm text-center">
         Based on and inspired by the tutorial by JavaScript Mastery
       </p>
-      <p className="text-white text-sm text-center font-medium mt-2">
+      <p className="text-white underline text-sm text-center font-medium mt-2">
+        <a
+          href="https://github.com/adrianhajdin/project_web3.0"
+          target="_blank"
+        >
+          YouTube Tutorial
+        </a>
+      </p>
+      <p className="text-white underline text-sm text-center font-medium mt-2">
         <a
           href="https://github.com/adrianhajdin/project_web3.0"
           target="_blank"
